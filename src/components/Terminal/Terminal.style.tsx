@@ -6,6 +6,10 @@ const Wrapper = styled.div`
   height: 100%;
   padding: 10px 10px;
   width: 100%;
+
+  &:focus {
+    outline:none;
+  }
 `;
 
 export { Wrapper };
