@@ -1,15 +1,18 @@
-import React from 'react';
-import Config from '../../config';
-import Underscore from '../Underscore';
+import React from 'react'
+import Config from '../../config'
+import Underscore from '../Underscore'
 
 type PromptProps = {
   command: string,
   isHistory?: boolean,
+  user?:string|null,
 }
 
-function Prompt({ command, isHistory = false }: PromptProps) {
-  const host:string = Config.host.replace(/^\//, '');
-  const label = `${host} login:`;
+function Prompt({ command, isHistory = false, user }: PromptProps) {
+  let host:string = Config.host.replace(/^\//, '')
+  let prelabel = user ? `${user}@` : ''
+  let postlabel = user ? '' : ' login'
+  let label = `${prelabel}${host}${postlabel}:`
 
   return (
     <div>
@@ -21,4 +24,4 @@ function Prompt({ command, isHistory = false }: PromptProps) {
   );
 }
 
-export default Prompt;
+export default Prompt

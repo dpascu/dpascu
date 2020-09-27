@@ -4,7 +4,8 @@ import { Wrapper } from './Terminal.style'
 
 function Terminal () {
   const [history, setHistory] = useState<Array<String>>([]);
-  const [line, setLine] = useState('');
+  const [line, setLine] = useState<string>('');
+  const [user, setUser] = useState<string|null>(null);
   const ref = useRef<HTMLDivElement>(null)
 
   function focus() {
@@ -20,8 +21,12 @@ function Terminal () {
   const onKeyPress = (e:KeyboardEvent) => {
     switch(e.key) {
       case 'Enter':
-        setHistory([...history, line])
-        setLine('');
+        if (!user && line) {
+          setUser(line)
+        } else {
+          setHistory([...history, line])
+        }
+        setLine('')
         break;
       default:
         setLine(`${line}${e.key}`)
@@ -42,7 +47,7 @@ function Terminal () {
           isHistory
         />
       ))}
-      <Prompt command={line} />
+      <Prompt command={line} user={user} />
     </Wrapper>
   );
 }
