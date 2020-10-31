@@ -1,1 +1,1 @@
-export { default } from './Underscore';
+export { default } from './Underscore'

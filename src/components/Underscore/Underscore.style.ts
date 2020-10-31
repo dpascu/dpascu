@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 const UnderscoreStyle = styled.span`
   animation: blinker 0.5s linear infinite;
@@ -8,6 +8,6 @@ const UnderscoreStyle = styled.span`
       opacity: 0;
     }
   }
-`;
+`
 
-export default UnderscoreStyle;
+export default UnderscoreStyle
