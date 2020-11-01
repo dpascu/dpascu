@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { buildPrompt } from './helpers'
+import { buildNextLine, buildPrompt } from './helpers'
 import HistoryEntry from './HistoryEntry'
-import { Digest, TerminalState } from './types'
+import { Digest, TerminalState } from './terminal.types'
 
 const initialState: TerminalState = {
   currentLine: buildPrompt(),
@@ -18,16 +18,18 @@ const terminalSlice = createSlice({
     digest(state, action: PayloadAction<Digest>) {
       const { input } = action.payload
 
-      if (!state.isLoggedIn) {
-        state.isLoggedIn = true
-        state.user = input
-      }
-
       state.history = [
         ...state.history,
         new HistoryEntry(state.currentLine, input),
       ]
-      state.currentLine = buildPrompt(state)
+
+      if (!state.isLoggedIn) {
+        state.isLoggedIn = true
+        state.user = input
+        state.currentLine = buildPrompt(state)
+      } else {
+        state.currentLine = buildNextLine(input, state)
+      }
     },
   },
 })

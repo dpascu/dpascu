@@ -12,4 +12,10 @@ const Wrapper = styled.div`
   }
 `
 
-export { Wrapper }
+const Line = styled.div`
+  &:not(:last-child) {
+    margin-bottom: 2px;
+  }
+`
+
+export { Line, Wrapper }

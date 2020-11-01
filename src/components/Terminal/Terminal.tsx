@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store/rootReducer'
 import { digest, HistoryEntry } from '../../store/terminal'
 
-import { Wrapper } from './Terminal.style'
+import { formatLine } from './helpers'
+import { Line, Wrapper } from './Terminal.style'
 import Underscore from '../Underscore'
 
 const Terminal: React.FC = () => {
@@ -45,13 +46,13 @@ const Terminal: React.FC = () => {
   return (
     <Wrapper tabIndex={0} onBlur={focus} onKeyDown={onKeyPress} ref={ref}>
       {history.map((item: HistoryEntry) => (
-        <div key={item.id as string}>{item.line}</div>
+        <Line key={item.id as string}>{formatLine(item.line)}</Line>
       ))}
-      <div>
-        <span>{currentLine}</span>
+      <Line>
+        <span>{formatLine(currentLine)}</span>
         <span>{input}</span>
         <Underscore />
-      </div>
+      </Line>
     </Wrapper>
   )
 }
