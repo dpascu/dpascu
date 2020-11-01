@@ -1,14 +1,21 @@
 import React, { KeyboardEvent, useEffect, useRef, useState } from 'react'
-import Prompt from './Prompt'
-import { Wrapper } from './Terminal.style'
+import { useDispatch, useSelector } from 'react-redux'
 
-function Terminal () {
-  const [history, setHistory] = useState<Array<String>>([]);
-  const [line, setLine] = useState<string>('');
-  const [user, setUser] = useState<string|null>(null);
+import { RootState } from '../../store/rootReducer'
+import { digest, HistoryEntry } from '../../store/terminal'
+
+import { Wrapper } from './Terminal.style'
+import Underscore from '../Underscore'
+
+const Terminal: React.FC = () => {
+  const dispatch = useDispatch()
+  const { currentLine, history } = useSelector(
+    (state: RootState) => state.terminal
+  )
+  const [input, setInput] = useState<string>('')
   const ref = useRef<HTMLDivElement>(null)
 
-  function focus() {
+  const focus = () => {
     if (ref.current) {
       ref.current.focus()
     }
@@ -18,38 +25,35 @@ function Terminal () {
     focus()
   }, [])
 
-  const onKeyPress = (e:KeyboardEvent) => {
-    switch(e.key) {
+  const onKeyPress = (e: KeyboardEvent) => {
+    console.log(e.key, e)
+    switch (e.key) {
       case 'Enter':
-        if (!user && line) {
-          setUser(line)
-        } else {
-          setHistory([...history, line])
-        }
-        setLine('')
-        break;
+        dispatch(digest({ input }))
+        setInput('')
+        break
+      case 'Backspace':
+        setInput(input.slice(0, -1))
+        break
       default:
-        setLine(`${line}${e.key}`)
+        if (new RegExp(/^[a-z0-9]$/, 'i').test(e.key)) {
+          setInput(`${input}${e.key}`)
+        }
     }
   }
 
   return (
-    <Wrapper
-      tabIndex={0}
-      onBlur={focus}
-      onKeyPress={onKeyPress}
-      ref={ref}
-    >
-      {history.map((item:String) => (
-        <Prompt
-          key={item as string}
-          command={item as string}
-          isHistory
-        />
+    <Wrapper tabIndex={0} onBlur={focus} onKeyDown={onKeyPress} ref={ref}>
+      {history.map((item: HistoryEntry) => (
+        <div key={item.id as string}>{item.line}</div>
       ))}
-      <Prompt command={line} user={user} />
+      <div>
+        <span>{currentLine}</span>
+        <span>{input}</span>
+        <Underscore />
+      </div>
     </Wrapper>
-  );
+  )
 }
 
 export default Terminal

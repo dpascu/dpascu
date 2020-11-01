@@ -12,7 +12,7 @@ const render = () => {
     <React.StrictMode>
       <Provider store={store}>
         <Terminal />
-      </Provider>,
+      </Provider>
     </React.StrictMode>,
     document.getElementById('root')
   )

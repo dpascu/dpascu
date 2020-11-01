@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 const Wrapper = styled.div`
   background: #292727;
@@ -8,8 +8,8 @@ const Wrapper = styled.div`
   width: 100%;
 
   &:focus {
-    outline:none;
+    outline: none;
   }
-`;
+`
 
-export { Wrapper };
+export { Wrapper }

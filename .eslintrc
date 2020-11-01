@@ -13,7 +13,9 @@
       "jsx": true
     }
   },
-  "rules": {},
+  "rules": {
+    "@typescript-eslint/no-var-requires": "off"
+  },
   "settings": {
     "react": {
       "version": "detect"
